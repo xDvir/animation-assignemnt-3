@@ -584,6 +584,19 @@ namespace igl
 					shapeinfoVector.at(i).tipCord = baseVec;
 				}
 			}
+			void Viewer::fixZAxis()
+			{
+
+				double zEulerAngel;
+				for (int i = 1; i <= numOfzCylinder; i++)
+				{
+					//cout << data_list.at(i).GetRotation().eulerAngles(2, 0, 2).transpose() << "\n";
+					zEulerAngel = data_list.at(i).GetRotation().eulerAngles(2, 0, 2)(2); // return rotation angle zxz
+					data_list.at(i).MyRotate(Vector3d(0, 0, 1), -zEulerAngel);// cancles the last rotation of z
+					if (i < numOfzCylinder)
+						data_list.at(i+1).RotateInSystem(Vector3d(0, 0, 1), zEulerAngel);// cancles the influence of the rotation on the rest of the zCylinder
+				}
+			}
 			 void Viewer::updateDistention()
 			 {
 				 shepreCord = (data_list.at(0).MakeTransd().col(3).head(3));
@@ -647,27 +660,27 @@ namespace igl
 			 }
 			 bool Viewer::canMove(int index,double angleToMove)
 			 {
-			
-				 Vector3d bottom;
-				 if (index > 1)
+				 for (size_t i =0; i < numOfzCylinder; i++)
 				 {
-					 Vector3d bottom = (shapeinfoVector.at(index - 1).tipCord.transpose() - RowVector3d(0, 0, 0.5));
+					 /*
+					 if (i = 0)
+					 {
+						 Vector3d bottom = (shapeinfoVector.at(i).tipCord.transpose() - (shapeinfoVector.at(i - 1).tipCord.transpose()));
+						 Vector3d top = (shapeinfoVector.at(i + 1).tipCord.transpose() - (shapeinfoVector.at(i).tipCord.transpose()));
+					 }
+					 else
+					 {
+						 Vector3d bottom = (shapeinfoVector.at(i).tipCord.transpose() - (shapeinfoVector.at(i - 1).tipCord.transpose()));
+						 Vector3d top = (shapeinfoVector.at(i + 1).tipCord.transpose() - (shapeinfoVector.at(i).tipCord.transpose()));
+					 }
+					 */
+					 cout << "-------------------------------\n";
+				     cout << "z: "<<atan2(data_list.at(i).GetRotation()(1, 0), data_list.at(i).GetRotation()(0, 0)) * 180 / M_PI << "\n";
+					cout << "y: " << atan2(-data_list.at(i).GetRotation()(2, 0), sqrt((data_list.at(i).GetRotation()(2, 1)* data_list.at(i).GetRotation()(2, 1))+(data_list.at(i).GetRotation()(2, 2)* data_list.at(i).GetRotation()(2, 2)))) * 180 / M_PI << "\n";
+					 cout << "x: " << atan2(data_list.at(i).GetRotation()(2,1), data_list.at(i).GetRotation()(2,2)) * 180 / M_PI << "\n";
+					 cout  << "\n";
 				 }
-				 else
-				 {
-					 Vector3d bottom = (data_list.at(1).MakeTransd().col(3).head(3).transpose() - RowVector3d(0, 0, 0.5));
-					
-				 }
-				 Vector3d top = (shapeinfoVector.at(index).tipCord.transpose() - RowVector3d(0, 0, -0.5));
-				 double dot = top.dot(bottom);
-
-				 dot = (dot < -1.0 ? -1.0 : (dot > 1.0 ? 1.0 : dot));
-
-				 double angle = acos(dot);
-			
-				 if ((angle + angleToMove)*180/M_PI -180 > 30 || (angle + angleToMove) * 180 / M_PI -180< -30)
-					 return false;
-				 return true;
+				 return false;
 				 
 			 }
 		

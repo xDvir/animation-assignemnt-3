@@ -112,7 +112,7 @@ void SandBox::Animate()
 		if (distanceVec >= 0.1)
 		{
 			//fabrik
-			//forward
+			//forward	
 			vecTipForCalc.at(0) = startCord;
 			for (int i = 0; i < numOfzCylinder; i++)
 			{
@@ -140,12 +140,15 @@ void SandBox::Animate()
 			}
 			//calc the distatnce
 			distanceVec = (shapeinfoVector[numOfzCylinder].tipCord - data_list[0].GetCenter()).norm();
+			fixZAxis();
+
 		}
 		else
 		{
 			cout << "distance: " << distanceVec << "\n";
 			isActive = false;
 			distanceVec = 1;
+			
 
 		}
 	}

@@ -188,7 +188,7 @@ static void glfw_key_callback(GLFWwindow* window, int key, int scancode, int act
 			//break;
 		case 'Z':
 			std::cout << "reset " <<std::endl;
-			scn->reset();
+			scn->canMove(50, 50);
 			break;
 
 	
@@ -230,7 +230,8 @@ static void glfw_key_callback(GLFWwindow* window, int key, int scancode, int act
 				cout << scn->data().GetRotation().row(i) << "\n";
 			}
 			break;
-		case GLFW_KEY_LEFT:			
+		case GLFW_KEY_LEFT:
+			
 				scn->data().RotateInSystem(scn->data().MakeTransd(), Eigen::Vector3d(0, 0, 1), -0.05);
 				scn->calcTips();
 			

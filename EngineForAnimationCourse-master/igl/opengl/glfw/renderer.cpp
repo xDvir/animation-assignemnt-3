@@ -167,6 +167,7 @@ void Renderer::MouseProcessing(int button)
 				scn->WhenTranslate();
 				scn->calcTips();
 				scn->updateDistention();
+				scn->fixZAxis();
 
 			}
 		}
@@ -178,6 +179,7 @@ void Renderer::MouseProcessing(int button)
 			scn->data().RotateInSystem(Vector3d(-1, 0, 0), yrel / 100.0);
 			scn->calcTips();
 			scn->updateDistention();
+			scn->fixZAxis();
 		}
 	}
 	else
@@ -194,6 +196,7 @@ void Renderer::MouseProcessing(int button)
 			scn->MyTranslate(Eigen::Vector3d(0, yToMove, 0), true);
 			scn->calcTips();
 			scn->updateDistention();
+			scn->fixZAxis();
 		}
 		else
 		{
@@ -201,6 +204,7 @@ void Renderer::MouseProcessing(int button)
 			scn->RotateInSystem(Eigen::Vector3d(0, 1, 0), xrel / 100.0);
 			scn->calcTips();
 			scn->updateDistention();
+			scn->fixZAxis();
 		}
 	}
 }

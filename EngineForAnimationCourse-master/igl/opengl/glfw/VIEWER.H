@@ -120,6 +120,7 @@ namespace glfw
     double returnAngle(Vector3d RD, Vector3d RE);
     void fabrikStart();
     bool canMove(int index, double angleToMove);
+    void Viewer::fixZAxis();
     ////////////////////////
     // Multi-mesh methods //
     ////////////////////////
